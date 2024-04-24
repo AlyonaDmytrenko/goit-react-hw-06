@@ -1,4 +1,4 @@
-const SearchBox = ({ filter, onChangeFilter }) => {
+const SearchBox = ({ filter, changeFilter }) => {
   return (
     <div>
       <form action="">
@@ -7,7 +7,7 @@ const SearchBox = ({ filter, onChangeFilter }) => {
           type="text"
           placeholder="Search..."
           value={filter}
-          onChange={onChangeFilter}
+          onChange={changeFilter}
         />
       </form>
     </div>

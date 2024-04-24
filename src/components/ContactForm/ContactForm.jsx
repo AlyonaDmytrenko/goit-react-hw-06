@@ -3,7 +3,8 @@ import {
   FORM_INITIAL_VALUES,
   MAX_CHAR_NAME_VALIDATION,
   MIN_CHAR_NAME_VALIDATION,
-} from '../../utils/constans';
+} from '../../utils/constants';
+
 import * as Yup from 'yup';
 import css from './contactForm.module.css';
 
@@ -21,10 +22,10 @@ const contactSchema = Yup.object({
   number: Yup.string().required('Contact number is required!').nullable(),
 });
 
-const ContactForm = ({ onAddContact }) => {
+const ContactForm = ({ addContact }) => {
   const handleSubmit = (values, actions) => {
     // console.log(values, actions);
-    onAddContact(values);
+    addContact(values);
     actions.resetForm();
   };
 

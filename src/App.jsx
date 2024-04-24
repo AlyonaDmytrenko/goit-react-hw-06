@@ -1,57 +1,60 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import ContactForm from './components/ContactForm/ContactForm';
 import ContactList from './components/ContactList/ContactList';
 import SearchBox from './components/SearchBox/SearchBox';
-import contact from './contact.json';
+// import contact from './contact.json';
 import { nanoid } from 'nanoid';
+import { useDispatch, useSelector } from 'react-redux';
+// import { addContact, deleteContact } from './redux/contactsSlice';
+// import { changeFilter } from './redux/filtersSlice';
 
 function App() {
-  const [userContact, setContact] = useState(() => {
-    const stringifiedContact = localStorage.getItem('userContact');
-    if (!stringifiedContact) return contact;
+  const dispatch = useDispatch();
 
-    const parsedUserContact = JSON.parse(stringifiedContact);
-    return parsedUserContact;
+  const userContact = useSelector(state => {
+    console.log('state:', state);
+    return state.contact.userContact;
   });
 
-  const [filter, setFilter] = useState('');
+  const filter = useSelector(state => {
+    return state.contact.filter;
+  });
 
   useEffect(() => {
     localStorage.setItem('userContact', JSON.stringify(userContact));
   }, [userContact]);
 
-  const onAddContact = formData => {
+  const addContact = formData => {
     const finalUserContact = {
       ...formData,
       id: nanoid(),
     };
-    setContact(prevState => [...prevState, finalUserContact]);
+
+    dispatch(addContact(finalUserContact));
   };
 
-  const onDeleteContact = contactId => {
-    setContact(prevContact =>
-      prevContact.filter(contact => contact.id !== contactId)
-    );
+  const deleteContact = contactId => {
+    dispatch(deleteContact(contactId));
   };
 
-  const onChangeFilter = event => {
-    setFilter(event.target.value);
+  const changeFilter = event => {
+    dispatch(changeFilter(event.target.value));
   };
 
-  const filteredContact = userContact.filter(
-    contact =>
-      contact.name.toLowerCase().includes(filter.toLowerCase()) ||
-      contact.number.toLowerCase().includes(filter.toLowerCase())
-  );
+  // const filteredContact = userContact.filter(
+  //   contact =>
+  //     contact.name.toLowerCase().includes(filter.toLowerCase()) ||
+  //     contact.number.toLowerCase().includes(filter.toLowerCase())
+  // );
 
   return (
     <div>
       <h1>Phonebook</h1>
-      <ContactForm onAddContact={onAddContact} />
-      <SearchBox filter={filter} onChangeFilter={onChangeFilter} />
+      <ContactForm addContact={addContact} />
+      <SearchBox filter={filter} changeFilter={changeFilter} />
       <ContactList
-        userContact={filteredContact}
-        onDeleteContact={onDeleteContact}
+        // userContact={filteredContact}
+        deleteContact={deleteContact}
       />
     </div>
   );

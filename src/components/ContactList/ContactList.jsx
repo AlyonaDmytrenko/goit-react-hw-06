@@ -1,6 +1,6 @@
 import Contact from './Contact/Contact';
 
-const ContactList = ({ userContact, onDeleteContact }) => {
+const ContactList = ({ userContact, deleteContact }) => {
   return (
     <ul>
       {userContact.map(contact => {
@@ -9,7 +9,7 @@ const ContactList = ({ userContact, onDeleteContact }) => {
             <Contact
               name={contact.name}
               number={contact.number}
-              onDeleteContact={() => onDeleteContact(contact.id)}
+              deleteContact={() => deleteContact(contact.id)}
             />
           </li>
         );
