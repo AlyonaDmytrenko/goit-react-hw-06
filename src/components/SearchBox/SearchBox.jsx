@@ -1,14 +1,15 @@
-const SearchBox = ({ filter, changeFilter }) => {
+import { useSelector } from 'react-redux';
+
+const SearchBox = () => {
+  const filter = useSelector(state => {
+    return state.filters.name;
+  });
+
   return (
     <div>
-      <form action="">
+      <form action="" value={filter}>
         <p>Find contacts by name</p>
-        <input
-          type="text"
-          placeholder="Search..."
-          value={filter}
-          onChange={changeFilter}
-        />
+        <input type="text" placeholder="Search..." />
       </form>
     </div>
   );

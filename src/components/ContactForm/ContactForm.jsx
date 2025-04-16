@@ -22,10 +22,16 @@ const contactSchema = Yup.object({
   number: Yup.string().required('Contact number is required!').nullable(),
 });
 
-const ContactForm = ({ addContact }) => {
+const ContactForm = ({ addContact, deleteContact }) => {
   const handleSubmit = (values, actions) => {
-    // console.log(values, actions);
     addContact(values);
+
+    actions.resetForm();
+  };
+
+  const handleClick = (values, actions) => {
+    deleteContact(values);
+
     actions.resetForm();
   };
 
@@ -34,6 +40,7 @@ const ContactForm = ({ addContact }) => {
       initialValues={FORM_INITIAL_VALUES}
       validationSchema={contactSchema}
       onSubmit={handleSubmit}
+      handleClick={handleClick}
     >
       <Form>
         <label>
