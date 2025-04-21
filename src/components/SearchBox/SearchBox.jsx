@@ -1,16 +1,23 @@
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { setFilter } from '../../../redux/filtersSlice';
 
 const SearchBox = () => {
-  const filter = useSelector(state => {
-    return state.filters.name;
-  });
+  const dispatch = useDispatch();
+  const filter = useSelector(state => state.filters.name);
+
+  const handleChange = e => {
+    dispatch(setFilter(e.target.value));
+  };
 
   return (
     <div>
-      <form action="" value={filter}>
-        <p>Find contacts by name</p>
-        <input type="text" placeholder="Search..." />
-      </form>
+      <p>Find contacts by name</p>
+      <input
+        type="text"
+        placeholder="Search..."
+        value={filter}
+        onChange={handleChange}
+      />
     </div>
   );
 };
