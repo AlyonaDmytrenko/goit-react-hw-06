@@ -1,11 +1,13 @@
 import { ErrorMessage, Field, Form, Formik } from 'formik';
+import { useDispatch } from 'react-redux';
+import { nanoid } from 'nanoid';
+import * as Yup from 'yup';
+import { addContact } from '../../redux/contactsSlice';
 import {
   FORM_INITIAL_VALUES,
   MAX_CHAR_NAME_VALIDATION,
   MIN_CHAR_NAME_VALIDATION,
 } from '../../utils/constants';
-
-import * as Yup from 'yup';
 import css from './contactForm.module.css';
 
 const contactSchema = Yup.object({
@@ -22,16 +24,15 @@ const contactSchema = Yup.object({
   number: Yup.string().required('Contact number is required!').nullable(),
 });
 
-const ContactForm = ({ addContact, deleteContact }) => {
+const ContactForm = () => {
+  const dispatch = useDispatch();
+
   const handleSubmit = (values, actions) => {
-    addContact(values);
-
-    actions.resetForm();
-  };
-
-  const handleClick = (values, actions) => {
-    deleteContact(values);
-
+    const finalContact = {
+      ...values,
+      id: nanoid(),
+    };
+    dispatch(addContact(finalContact));
     actions.resetForm();
   };
 
@@ -40,7 +41,6 @@ const ContactForm = ({ addContact, deleteContact }) => {
       initialValues={FORM_INITIAL_VALUES}
       validationSchema={contactSchema}
       onSubmit={handleSubmit}
-      handleClick={handleClick}
     >
       <Form>
         <label>
